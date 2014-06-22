@@ -4,14 +4,14 @@
 ## add descriptive variable names
 ## export the data set to 'tidy_data_set.csv' file in the current directory
 createTidyData <- function() {
-  xSet <- mergeDataSets()
-  xSet <- addColumns(extractColumns(xSet))
+  xSet <- addIdentifierColumns(extractRelevantColumns(mergeDataSets()))
   export(xSet)
   xSet
 }
 
+
 ## merge the test/train data sets into one data set
-## the data frame containing the raw data of both data sets
+## return the data frame containing the raw data of both data sets
 mergeDataSets <- function() {
   xTrainSet <- read.csv("train/X_train.txt", sep="", header=FALSE);
   xTestSet <- read.csv("test/X_test.txt", sep="", header=FALSE);
@@ -20,20 +20,17 @@ mergeDataSets <- function() {
 }
 
 
-## extract the mean and standard deviation columns from the given data fram
+## extract the mean and standard deviation columns from the given data frame
 ## the relevant columns are given by matching values of the 'features' set
 ## param xSet - the data frame from the mergeDataSets() function
-extractColumns <- function(xSet) {
-  #read the variables names
-  features <- read.csv("features.txt", sep="", header=FALSE);
-  colnames(features) <- c("index","name");
+extractRelevantColumns <- function(xSet) {
   
-  #set proper column names for the xSet
-  colnames(xSet) <- features$name;
+  #read the variables names
+  names <- as.character(read.csv("features.txt", sep="", header=FALSE)$V2)
+  colnames(xSet) <- names
   
   #create the data set projection containing the relevant variables
-  names = as.character(features$name);
-  relevantNames = names[grep(".*mean().*|.*std().*", names)]
+  relevantNames = names[grep("mean()|std()", names)]
   xSet[,names(xSet) %in% relevantNames]
 }
 
@@ -41,19 +38,15 @@ extractColumns <- function(xSet) {
 ## add 'activity.id', 'activity.name' and 'subject' columns to the given data set
 ## the function requires 'plyr' package
 ## param xSet - the data frame returned by the extractColumns() function
-addColumns <- function(xSet) {
-  
+addIdentifierColumns <- function(xSet) {
+  require(plyr)
   #add the 'subject' column stored in the subject_train and subject_test files
-  subjectsTrain <- read.csv("train/subject_train.txt",sep="",header=FALSE)
-  subjectsTest <- read.csv("test/subject_test.txt", sep="", header=FALSE)
-  subjects <- rbind(subjectsTrain,subjectsTest)
+  subjects <- rbind(read.csv("train/subject_train.txt",sep="",header=FALSE),read.csv("test/subject_test.txt", sep="", header=FALSE))
   xSet <- cbind(subjects,xSet)
   colnames(xSet)[1] <- "subject"
   
   #add the 'activity.id' column stored in the y_train and x_train files
-  yTrain <- read.csv("train/y_train.txt", sep="", header=FALSE)
-  yTest <- read.csv("test/y_test.txt", sep="", header=FALSE)
-  ySet <- rbind(yTrain, yTest)
+  ySet <- rbind(read.csv("train/y_train.txt", sep="", header=FALSE), read.csv("test/y_test.txt", sep="", header=FALSE))
   xSet <- cbind(ySet,xSet)
   colnames(xSet)[1] <- "activity.id"
   
@@ -61,7 +54,6 @@ addColumns <- function(xSet) {
   activityLabels <- read.csv("activity_labels.txt", sep="", header=FALSE)
   colnames(activityLabels) <- c("activity.id", "activity.name")
   
-  library(plyr)
   #make sure 'activity.id' and 'activity.name' are the first columns
   xSet <- join(xSet,activityLabels)[,union(names(activityLabels), names(xSet))]
 }
