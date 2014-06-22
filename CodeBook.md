@@ -21,4 +21,4 @@
 3. Result
   - one data frame containing the mean() and std() combined observations from 'X_train.txt' and 'Y_train.txt' with descriptive variable names and descriptive identifier columns
   - 'tidy_data_set.csv' - data frame above exported as csv file
-  - mean of each variable in the data frame for each activiy/subject combination
+  - one data frame containing the mean of each variable in the 'tidy data set' for each activiy/subject combination
