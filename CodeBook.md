@@ -11,23 +11,23 @@
   
 2. Variables: the following variables are avaialble in the data set:
 
-tBodyAcc-XYZ
-tGravityAcc-XYZ
-tBodyAccJerk-XYZ
-tBodyGyro-XYZ
-tBodyGyroJerk-XYZ
-tBodyAccMag
-tGravityAccMag
-tBodyAccJerkMag
-tBodyGyroMag
-tBodyGyroJerkMag
-fBodyAcc-XYZ
-fBodyAccJerk-XYZ
-fBodyGyro-XYZ
-fBodyAccMag
-fBodyAccJerkMag
-fBodyGyroMag
-fBodyGyroJerkMag
+ - tBodyAcc-XYZ
+ - tGravityAcc-XYZ
+ - tBodyAccJerk-XYZ
+ - tBodyGyro-XYZ
+ - tBodyGyroJerk-XYZ
+ - tBodyAccMag
+ - tGravityAccMag
+ - tBodyAccJerkMag
+ - tBodyGyroMag
+ - tBodyGyroJerkMag
+ - fBodyAcc-XYZ
+ - fBodyAccJerk-XYZ
+ - fBodyGyro-XYZ
+ - fBodyAccMag
+ - fBodyAccJerkMag
+ - fBodyGyroMag
+ - fBodyGyroJerkMag
 
 - '-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.
 - for each variable (and each direction for 3-axial variables) the mean and standard deviation for the sampling window are provided.
